@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_task_details'|trans({'%id%': task.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_task_details'|trans({'%id%': task.id|default('')}) }}</h1>
+    {% if task is defined and task|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label_id'|trans }}</dt>
+            <dd>{{ task.id }}</dd>
+            <dt>{{ 'label_created_at'|trans }}</dt>
+            <dd>{{ task.createdAt|date('Y/m/d') }}</dd>
+            <dt>{{ 'label_updated_at'|trans }}</dt>
+            <dd>{{ task.updatedAt|date('Y/m/d') }}</dd>
+            <dt>{{ 'label_category'|trans }}</dt>
+            <dd>{{  task.category.title }}</dd>
+            <dt>{{ 'label_author'|trans }}</dt>
+            <dd>{{  task.author.email }}</dd>
+            <dt>{{ 'label_title'|trans }}</dt>
+            <dd>{{  task.title }}</dd>
+            <dt>{{ 'label_text'|trans }}</dt>
+            <dd>{{ task.text|markdown_to_html }}</dd>
+            <dt>{{ 'label_tag'|trans }}</dt>
+            <dd>
+                {% for tag in task.getTags() %}
+                    {{ tag.title }}
+                {% endfor %}
+            </dd>
+
+        </dl>
+        <p>
+            <a href="{{ url('task_index') }}" title="{{ 'action_back_to_list'|trans }}">
+                {{ 'action_back_to_list'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message_item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

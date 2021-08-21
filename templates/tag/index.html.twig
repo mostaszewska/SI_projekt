@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_tag_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_tag_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'tag.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'tag.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'tag.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'tag.updatedAt') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if is_granted('ROLE_USER','ROLE_ADMIN') %}
+                <a href="{{ url('tag_create') }}" title="view" id="view_button">
+                    {{ 'tag_create'|trans }}
+                </a>
+            {% endif %}
+
+            {% for tag in pagination.items %}
+                <tr>
+                    <td>{{ tag.id }}</td>
+                    <td>{{ tag.title }}</td>
+                    <td>{{ tag.createdAt|format_date('long') }}</td>
+                    <td>{{ tag.updatedAt|format_date('long') }}</td>
+                    <td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                             <a href="{{ url('tag_edit', {id: tag.id}) }}" title="{{ 'label_edit'|trans }}">
+                                 {{ 'label_edit'|trans }}
+                             </a>
+                            <a href="{{ url('tag_delete', {id: tag.id}) }}" title="{{ 'label_delete'|trans }}">
+                                  {{ 'label_delete'|trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% else %}
+
+        {% include 'default/_single_flash_message.html.twig' with {
+            type: 'warning',
+            message: 'message_empty_list'|trans
+        } %}
+
+    {% endif %}
+{% endblock %}
