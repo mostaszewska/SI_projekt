@@ -30,18 +30,33 @@
                 <li class="nav-item">
                     <a class="nav-link" href={{ url('tag_index') }}>Tagi</a>
                 </li>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{{ url('user_index') }}">{{ 'title_user_index'|trans }} </a>#}
-{#                </li>#}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('user_index') }}">{{ 'title_user_index'|trans }} </a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_USER') == false %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('user_registration') }}">{{ 'make_account'|trans }}</a>
+                </li>
             {% endif %}
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div>
-                    <a href="{{ url('app_logout') }}" class="btn btn-outline-dark" role="button">{{ 'action_logout'|trans }}</a>
-                </div>
+            <li class="nav-item>{{ app.user.email }}</li>
+            {% if is_granted('ROLE_USER')%}
+            <li class="nav-item>
+                <a class="nav-link" href="{{ url('user_show', {id: app.user.id}) }}" title="show user">{{ 'my_data'|trans }}</a>
+
+                <a class="nav-link" href="{{ url('user_edit', {id: app.user.id}) }}">{{ 'button_user_edit'|trans }}</a>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('app_logout') }}" class="btn btn-outline-dark" role="button">{{ 'action_logout'|trans }}</a>
+            </li>
             {% else %}
-                <div>
-                    <a href="{{ url('app_login') }}" class="btn btn-outline-dark" role="button">{{ 'action_login'|trans }}</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('app_login') }}" class="btn btn-outline-dark" role="button">{{ 'action_login'|trans }}</a>
+            </li>
             {% endif %}
         </ul>
     </div>

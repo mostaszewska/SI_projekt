@@ -1,41 +1,24 @@
 <?php
 /**
- * Task type.
+ * Users type.
  */
 
 namespace App\Form;
 
-use App\Entity\Category;
-use App\Entity\Task;
-use App\Form\DataTransformer\TagsDataTransformer;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TaskType.
+ * Class UserType.
  */
-class TaskType extends AbstractType
+class UserType extends AbstractType
 {
-    /**
-     * Tags data transformer.
-     *
-     * @var \App\Form\DataTransformer\TagsDataTransformer
-     */
-    private $tagsDataTransformer;
-
-    /**
-     * TaskType constructor.
-     *
-     * @param \App\Form\DataTransformer\TagsDataTransformer $tagsDataTransformer Tags data transformer
-     */
-    public function __construct(TagsDataTransformer $tagsDataTransformer)
-    {
-        $this->tagsDataTransformer = $tagsDataTransformer;
-    }
-
     /**
      * Builds the form.
      *
@@ -50,48 +33,40 @@ class TaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'title',
+            'firstname',
             TextType::class,
             [
-                'label' => 'label_title',
+                'label' => 'label_firstname',
                 'required' => true,
                 'attr' => ['max_length' => 64],
             ]
         );
         $builder->add(
-            'category',
-            EntityType::class,
+            'lastname',
+            TextType::class,
             [
-                'class' => Category::class,
-                'choice_label' => function ($category) {
-                    return $category->getTitle();
-                },
-                'label' => 'label_category',
-                'placeholder' => 'label_none',
+                'label' => 'label_lastname',
                 'required' => true,
+                'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
-            'tags',
-            TextType::class,
+            'email',
+            EmailType::class,
             [
-                'label' => 'label_tags',
-                'required' => false,
-                'attr' => ['max_length' => 128],
+                'label' => 'label_email',
+                'required' => true,
+                'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
-            'text',
-            TextType::class,
+            'password',
+            RepeatedType::class,
             [
-                'label' => 'label_text',
-                'required' => true,
-                'attr' => ['max_length' => 1000],
+                'type' => PasswordType::class,
+                'first_options' => array('label'=>'label_password'),
+                'second_options' => array('label'=>'label_password_repeat'),
             ]
-        );
-
-        $builder->get('tags')->addModelTransformer(
-            $this->tagsDataTransformer
         );
     }
 
@@ -102,7 +77,7 @@ class TaskType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Task::class]);
+        $resolver->setDefaults(['data_class' => User::class]);
     }
 
     /**
@@ -115,6 +90,6 @@ class TaskType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'task';
+        return 'user';
     }
 }

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_user_delete'|trans({'%id%': user.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_user_delete'|trans({'%id%': user.id|default('')}) }}</h1>
+    {{ form_start(form, { method: 'DELETE', action: url('user_delete', {id: user.id}) }) }}
+    {{ form_widget(form) }}
+    <p> Czy na pewno chcesz to usunąć? </p>
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-primary" />
+    </div>
+    <div class="form-group row float-sm-left">
+        <a href="{{ url('user_index') }}" class="btn btn-link">
+            {{ 'action_back_to_list'|trans }}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

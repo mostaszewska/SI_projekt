@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_user_list'|trans}}
+{% endblock %}
+
+{% block body %}
+    <h1> {{ 'title_user_list'|trans}} </h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'user.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_email'|trans, 'user.emial') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_firstname'|trans, 'user.firstname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_lastname'|trans, 'user.lastname') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+
+
+            {% for user in pagination.items %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.email }}</td>
+
+                    <td>
+
+
+                        <a href="{{ url('user_show', {id: user.id}) }}" title="view" id="view_button">
+                            {{ 'action_view'|trans }}
+                        </a>
+
+
+                        <a href="{{ url('user_edit', {id: user.id}) }}" title="view" id="view_button">
+                            {{ 'action_edit'|trans }}
+                        </a>
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+
+    {% else %}
+        {% include 'default/_single_flash_message.html.twig' with {
+            type: 'warning',
+            message: 'message.empty_list'|trans
+        } %}
+
+    {% endif %}
+{% endblock %}

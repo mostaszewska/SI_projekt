@@ -54,11 +54,26 @@ class User implements UserInterface
      */
     private $roles = [];
 
+
     /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
+     * The hashed password.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=64)
+     *
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=128)
+     */
+    private $lastname;
 
     public function getId(): ?int
     {
@@ -109,7 +124,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -122,9 +137,6 @@ class User implements UserInterface
     }
 
     /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
      * @see UserInterface
      */
     public function getSalt(): ?string
@@ -140,4 +152,44 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * Getter for Firstname.
+     * @return  string|null
+     */
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Setter for Firstname.
+     * @param $firstname
+     * @return $this
+     */
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
+
+    }
+
+    /**
+     * Getter for Lastname.
+     * @return string|null
+     */
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * Setter for Lastname.
+     * @param $lastname
+     * @return $this
+     */
+    public function setLastname(string $lastname): void
+    {
+        $this->lastname = $lastname;
+    }
+
 }
