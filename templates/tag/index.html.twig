@@ -37,10 +37,10 @@
                     <td>{{ tag.updatedAt|format_date('long') }}</td>
                     <td>
                         {% if is_granted('ROLE_ADMIN') %}
-                             <a href="{{ url('tag_edit', {id: tag.id}) }}" title="{{ 'label_edit'|trans }}">
+                             <a href="{{ url('tag_edit', {id: tag.id}) }}" title="{{ 'label_edit'|trans }}" id="view_button">
                                  {{ 'label_edit'|trans }}
                              </a>
-                            <a href="{{ url('tag_delete', {id: tag.id}) }}" title="{{ 'label_delete'|trans }}">
+                            <a href="{{ url('tag_delete', {id: tag.id}) }}" title="{{ 'label_delete'|trans }}" id="view_button">
                                   {{ 'label_delete'|trans }}
                             </a>
                         {% endif %}

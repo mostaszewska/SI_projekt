@@ -21,7 +21,7 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(100, 'tasks', function ($i) {
+        $this->createMany(50, 'tasks', function ($i) {
             $task = new Task();
             $task->setTitle($this->faker->sentence);
             $task->setText($this->faker->sentence);

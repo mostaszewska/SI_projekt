@@ -5,71 +5,84 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     {% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light ">
-    <a class="navbar-brand">Q&A</a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href={{ url('task_index') }}>Pytania</a>
-            </li>
-            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')) %}
-                <li class="nav-item">
-                    <a class="nav-link" href={{ url('task_create') }}>Dodaj Pytanie</a>
-                </li>
+
+<div class="menu">
+    <nav id="menu">
+        <ul>
+            <li><a href="{{ url('task_index') }}" title="view">
+                    {{ 'menu_question'|trans }}
+                </a></li>
+            <li><a href="{{ url('answer_index')}}" title="view">
+                    {{ 'menu_answer'|trans }}
+                </a></li>
+            <li><a href="{{ url('category_index') }}" title="view">
+                    {{ 'menu_category'|trans }}
+                </a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ url('tag_index')}}" title="view">
+                        {{ 'menu_tag'|trans }}
+                    </a></li>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item">
-                    <a class="nav-link" href={{ url('category_index') }}>Kategorie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href={{ url('category_create') }}>Dodaj Kategorie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href={{ url('tag_index') }}>Tagi</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('user_index') }}">{{ 'title_user_index'|trans }} </a>
-                </li>
-            {% endif %}
-            {% if is_granted('ROLE_USER') == false %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('user_registration') }}">{{ 'make_account'|trans }}</a>
-                </li>
-            {% endif %}
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <li class="nav-item>{{ app.user.email }}</li>
-            {% if is_granted('ROLE_USER')%}
-            <li class="nav-item>
-                <a class="nav-link" href="{{ url('user_show', {id: app.user.id}) }}" title="show user">{{ 'my_data'|trans }}</a>
-
-                <a class="nav-link" href="{{ url('user_edit', {id: app.user.id}) }}">{{ 'button_user_edit'|trans }}</a>
-            </li>
-            {% endif %}
-            {% endif %}
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('app_logout') }}" class="btn btn-outline-dark" role="button">{{ 'action_logout'|trans }}</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('app_login') }}" class="btn btn-outline-dark" role="button">{{ 'action_login'|trans }}</a>
-            </li>
+                <li><a href="{{ url('user_index')}}" title="view">
+                        {{ 'menu_user'|trans }}
+                    </a></li>
             {% endif %}
         </ul>
-    </div>
-</nav>
+    </nav>
+</div>
+<div class="login">
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <div style="color: white">{{ app.user.email }}</div>
+        {% if is_granted('ROLE_USER')%}
+            <div>
+                <a href="{{ url('user_show', {id: app.user.id}) }}" title="show user">{{ 'my_data'|trans }}</a>
+
+                <a href="{{ url('user_edit', {id: app.user.id}) }}">{{ 'button_user_edit'|trans }}</a>
+            </div>
+        {% endif %}
+        <div>
+            <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
+        </div>
+    {% else %}
+        <div>
+            <a href="{{ url('app_login') }}">{{ 'action_login'|trans }}</a>
+        </div>
+    {% endif %}
+    {% if is_granted('ROLE_USER') == false %}
+        <div>
+            <a href="{{ url('user_registration') }}">{{ 'make_account'|trans }}</a>
+        </div>
+    {% endif %}
+
+</div>
 
 <div class="container-fluid">
-    {% include 'default/_flash_messages.html.twig' %}
-    {% block body %}{% endblock %}
+    {% for type, messages in app.session.flashBag.all %}
+        {% for message in messages %}
+            {% include 'default/_single_flash_message.html.twig' with {
+                type: type,
+                message: message|trans
+            } %}
+        {% endfor %}
+    {% endfor %}
+
+
+    {% block body %}
+
+    {% endblock %}
 </div>
+
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 {% endblock %}
+
+
 </body>
 </html>

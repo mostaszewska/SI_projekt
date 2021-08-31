@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\AnswerRepository;
 use App\Repository\TaskRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,11 +66,17 @@ class TaskController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(Task $task): Response
+    public function show(Request $request, Task $task, PaginatorInterface $paginator, AnswerRepository $answerRepository): Response
     {
+        $pagination = $paginator->paginate(
+            $answerRepository->queryByTaskId($task->getId()),
+            $request->query->getInt('page', 1),
+            AnswerRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+
         return $this->render(
             'task/show.html.twig',
-            ['task' => $task]
+            ['task' => $task, 'pagination' => $pagination]
         );
     }
 

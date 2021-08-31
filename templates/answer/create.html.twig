@@ -1,0 +1,10 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title_answer_create',
+    attr: {
+        method: 'POST',
+        action: url('answer_create')
+    },
+    form: form,
+    submit_label: 'answer_create'|trans,
+    back_to_list_path: 'answer_index',
+} %}

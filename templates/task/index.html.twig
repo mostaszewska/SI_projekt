@@ -21,12 +21,20 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'task.title') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.title') }}</th>
                 <th>{{ 'label_tags'|trans }}</th>
+                <th>{{ 'label_author'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
 
 
             <tbody>
+            <tbody>
+            {% if is_granted('ROLE_USER')%}
+                <a href="{{ url('task_create') }}" title="view" id="view_button">
+                    {{ 'task_create'|trans }}
+                </a>
+            {% endif %}
+
 
 
             {% for task in pagination.items %}
@@ -44,24 +52,44 @@
                                 </a>
                             {% endfor %}
                         {% else %}
-                            &nbsp;
+                            &nbsp;&nbsp;
                         {% endif %}
                     </td>
-
+                    <td>{{ task.author.email }}</td>
                     </td>
                     <td>
-                        <a href="{{ url('task_show', {id: task.id}) }}" title="{{ 'action_view'|trans }}">
+                        <a href="{{ url('task_show', {id: task.id}) }}" title="view" id="view_button">
                             {{ 'action_view'|trans }}
                         </a>
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ url('task_edit', {id: task.id}) }}" title="{{ 'label_edit'|trans }}">
-                            {{ 'label_edit'|trans }}
-                        </a>
-                        <a href="{{ url('task_delete', {id: task.id}) }}" title="{{ 'label_delete'|trans }}">
-                            {{ 'label_delete'|trans }}
-                        </a>
+
+                        {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN')  == false %}
+                            <a href="{{ url('task_edit', {id: task.id}) }}" title="view" id="view_button">
+                                {{ 'action_edit'|trans }}
+                            </a>
                         {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+
+                            <a href="{{ url('task_delete', {id: task.id}) }}" title="view" id="view_button">
+                                {{ 'action_delete'|trans }}
+                            </a>
+                        {% endif %}
+                        <a href="{{ url('answer_index', {'filters_task_id' : task.id}) }}" title="{{ 'see_answers'|trans }}" id="view_button">
+                            {{ 'see_answers'|trans }}
+                        </a>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('answer_create', {'filters_task_id' : task.id}) }}" title="{{ 'create_answer'|trans }}" id="view_button">
+                                {{ 'create_answers'|trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ url('answer_add', {'filters_task_id' : task.id}) }}" title="{{ 'add_answer'|trans }}" id="view_button">
+                                {{ 'add_answers'|trans }}
+                            </a>
+                        {% endif%}
+
+
+
                     </td>
+
                 </tr>
             {% endfor %}
             </tbody>

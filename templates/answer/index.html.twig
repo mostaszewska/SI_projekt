@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_answer_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_answer_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'answer.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'answer.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'answer.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_text'|trans, 'answer.text') }}</th>
+                <th>{{ 'label_favourtie'|trans }}</th>
+                <th>{{ 'label_author'|trans }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ url('answer_create') }}" title="view" id="view_button">
+                    {{ 'answer_create'|trans }}
+                </a>
+            {% endif %}
+            {% if is_granted('ROLE_USER') == false %}
+                <a href="{{ url('answer_add') }}" title="view" id="view_button">
+                    {{ 'answer_add'|trans }}
+                </a>
+            {% endif %}
+
+            {% for answer in pagination.items %}
+                <tr>
+                    <td>{{ answer.id }}</td>
+                    <td>{{ answer.createdAt|format_date('long')}}</td>
+                    <td>{{ answer.updatedAt|format_date('long')}}</td>
+                    <td>{{ answer.text }}</td>
+                    <td>{{ answer.favourite }}</td>
+                    {% if answer.nick is empty %}
+                        <td>{{ answer.author.email }}</td>
+                    {% else %}
+                        <td>{{ answer.nick }}</td>
+                    {% endif %}
+                    <td>
+
+                        <a href="{{ url('answer_show', {id: answer.id}) }}" title="view" id="view_button">
+                            {{ 'action_view'|trans }}
+                        </a>
+
+                        {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN')  == false %}
+                            <a href="{{ url('answer_edit', {id: answer.id}) }}" title="view" id="view_button">
+                                {{ 'action_edit'|trans }}
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('answer_delete', {id: answer.id}) }}" title="view" id="view_button">
+                                {{ 'action_delete'|trans }}
+                            </a>
+                        {% endif %}
+{#                        {% if is_granted('ROLE_ADMIN') %}#}
+{#                            <a href="{{ url('answer_favourite', {id: answer.id}) }}" title="view" id="view_button">#}
+{#                                {{ 'action_favourite'|trans }}#}
+{#                            </a>#}
+{#                        {% endif %}#}
+                        {% if is_granted('ROLE_USER') %}
+                            {% if not answer.task|length %}
+                                <a href="{{ url('task_delete', {id: answer.task.id}) }}" title="view" id="view_button">
+                                    {{ 'action_delete_task'|trans }}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+
+                        {#  <a href="{{ url('answer_index', {'filters_question_id' : answer.question.id}) }}" title="{{ answer.question.id }}" id="view_button">
+                            {{ answer.question.id }}
+                        </a>
+                        #}
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+
+    {% else %}
+        {% include 'default/_single_flash_message.html.twig' with {
+            type: 'warning',
+            message: 'message.empty_list'|trans
+        } %}
+    {% endif %}
+{% endblock %}

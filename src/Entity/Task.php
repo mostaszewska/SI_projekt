@@ -113,6 +113,14 @@ class Task
      */
     private $text;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="tasks", cascade={"remove"})
+     * @ORM\JoinTable(name="answers_tasks")
+     *
+     *
+     */
+    private $answers;
+
 
     /**
      * Task constructor.
@@ -258,14 +266,14 @@ class Task
         return $this;
     }
 
-    public function getAnswer(): ?string
+    public function getAnswers(): Collection
     {
-        return $this->answer;
+        return $this->answers;
     }
 
-    public function setAnswer(?string $answer): self
+    public function setAnswers(Collection $answers): self
     {
-        $this->answer = $answer;
+        $this->answers = $answers;
 
         return $this;
     }

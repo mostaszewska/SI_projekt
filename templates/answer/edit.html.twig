@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_answer_edit'|trans({'%id%': answer.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_answer_edit'|trans({'%id%': answer.id|default('')}) }}</h1>
+    {{ form_start(form, { method: 'PUT', action: url('answer_edit', {id: answer.id}) }) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action_save'|trans }}" id="view_button" />
+    </div>
+    <div class="form-group row float-sm-left">
+        <a href="{{ url('task_index') }}" id="view_button">
+            {{ 'action_back_to_list'|trans }}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+

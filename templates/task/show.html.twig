@@ -31,10 +31,11 @@
 
         </dl>
         <p>
-            <a href="{{ url('task_index') }}" title="{{ 'action_back_to_list'|trans }}">
+            <a href="{{ url('task_index') }}" title="{{ 'action_back_to_list'|trans }}"id="view_button">
                 {{ 'action_back_to_list'|trans }}
             </a>
         </p>
+
     {% else %}
         <p>
             {{ 'message_item_not_found'|trans }}

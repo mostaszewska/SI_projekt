@@ -23,6 +23,11 @@
             </tr>
             </thead>
             <tbody>
+            {% if is_granted('ROLE_ADMIN' )%}
+                <a href="{{ url('category_create') }}" title="view" id="view_button">
+                    {{ 'category_create'|trans }}
+                </a>
+            {% endif %}
             {% for category in pagination.items %}
                 <tr>
                     <td>{{ category.id }}</td>
@@ -30,14 +35,14 @@
                     <td>{{ category.updatedAt|format_date('long') }}</td>
                     <td>{{ category.title }}</td>
                     <td>
-                        <a href="{{ url('category_show', {id: category.id}) }}" title="{{ 'action_view'|trans }}">
+                        <a href="{{ url('category_show', {id: category.id}) }}" title="{{ 'action_view'|trans }}" id="view_button">
                             {{ 'action_view'|trans }}
                         </a>
-                        <a href="{{ url('category_edit', {id: category.id}) }}" title="{{ 'label_edit'|trans }}">
+                        <a href="{{ url('category_edit', {id: category.id}) }}" title="{{ 'label_edit'|trans }}" id="view_button">
                             {{ 'label_edit'|trans }}
                         </a>
                         {%  if not category.tasks|length %}
-                            <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'label_delete'|trans }}">
+                            <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'label_delete'|trans }}" id="view_button">
                                 {{ 'label_delete'|trans }}
                             </a>
                         {% endif %}
