@@ -97,6 +97,16 @@ class TaskRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    public function queryByCategoryId(String $categoryId): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('task.category_id = :category_id')
+            ->setParameter('category_id', $categoryId);
+
+        return $queryBuilder;
+    }
+
     /**
      * Get or create new query builder.
      *

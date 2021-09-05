@@ -7,6 +7,7 @@ namespace App\Service;
 
 use App\Entity\Answer;
 use App\Repository\AnswerRepository;
+use App\Controller\AnswerController;
 use App\Repository\TaskRepository;
 use App\Service\TaskService;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -23,7 +24,7 @@ class AnswerService
      *
      * @var AnswerRepository
      */
-    private $answerRepository;
+    private AnswerRepository $answerRepository;
 
     /**
      * Paginator.

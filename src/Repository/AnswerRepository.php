@@ -50,17 +50,17 @@ class AnswerRepository extends ServiceEntityRepository
     {
         return $this->getOrCreateQueryBuilder()
             ->orderBy('answer.createdAt', 'DESC');
-        $queryBuilder = $this->getOrCreateQueryBuilder()
-            ->select(
-                'partial answer.{id, createdAt, updatedAt, text, favourite}',
-                'partial tasks.{id, createdAt, updatedAt, text}',
-
-            )
-            ->join('answer.tasks', 'tasks')
-            -> orderBy('answer.favourite',  'DESC');
-        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
-
-        return $queryBuilder;
+//        $queryBuilder = $this->getOrCreateQueryBuilder()
+//            ->select(
+//                'partial answer.{id, createdAt, updatedAt, text, favourite}',
+//                'partial tasks.{id, createdAt, updatedAt, text}',
+//
+//            )
+//            ->join('answer.tasks', 'tasks')
+//            -> orderBy('answer.favourite',  'DESC');
+//        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
+//
+//        return $queryBuilder;
     }
     /**
      * Save record.
@@ -75,19 +75,19 @@ class AnswerRepository extends ServiceEntityRepository
         $this->_em->persist($answer);
         $this->_em->flush();
     }
-    /**
-     * Delete record.
-     *
-     * @param \App\Entity\Answer $answer Answer entity
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function delete(Answer $answer): void
-    {
-        $this->_em->remove($answer);
-        $this->_em->flush();
-    }
+//    /**
+//     * Delete record.
+//     *
+//     * @param \App\Entity\Answer $answer Answer entity
+//     *
+//     * @throws \Doctrine\ORM\ORMException
+//     * @throws \Doctrine\ORM\OptimisticLockException
+//     */
+//    public function delete(Answer $answer): void
+//    {
+//        $this->_em->remove($answer);
+//        $this->_em->flush();
+//    }
 
     /**
      * Query tasks by author.

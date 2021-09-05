@@ -91,7 +91,7 @@ class TaskService
      *
      * @return PaginationInterface Paginated list
      */
-    public function createPaginatedListAuthor(int $page, UserInterface $user, array $filters = []): PaginationInterface
+    public function getByCategoryId(int $page, UserInterface $user, String $categoryId): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 

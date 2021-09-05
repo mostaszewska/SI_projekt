@@ -43,7 +43,11 @@
                     <td>{{ task.createdAt|date('Y/m/d') }}</td>
                     <td>{{ task.updatedAt|date('Y/m/d') }}</td>
                     <td>{{ task.title }}</td>
-                    <td>{{ task.category.title }}</td>
+                    <td>
+                        <a href="{{ url('task_index', {'filters_category_id' : task.category.id}) }}" title="{{ task.category.title }}">
+                            {{ task.category.title }}
+                        </a>
+                    </td>
                     <td>
                         {% if task.tags is defined and task.tags|length %}
                             {% for tag in task.tags %}

@@ -9,6 +9,7 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\AnswerRepository;
 use App\Repository\TaskRepository;
+use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -40,8 +41,16 @@ class TaskController extends AbstractController
      */
     public function index(Request $request, TaskRepository $taskRepository, PaginatorInterface $paginator): Response
     {
+        $categoryId = $request->query->get('filters_category_id');
+
+        if ($categoryId) {
+            $qb = $taskRepository->queryByCategoryId($categoryId);
+        } else {
+            $qb = $taskRepository->queryAll();
+        }
+
         $pagination = $paginator->paginate(
-            $taskRepository->queryAll(),
+            $qb,
             $request->query->getInt('page', 1),
             TaskRepository::PAGINATOR_ITEMS_PER_PAGE
         );

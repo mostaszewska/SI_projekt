@@ -38,8 +38,10 @@
                         <a href="{{ url('category_show', {id: category.id}) }}" title="{{ 'action_view'|trans }}" id="view_button">
                             {{ 'action_view'|trans }}
                         </a>
+                        {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN')  == false %}
                         <a href="{{ url('category_edit', {id: category.id}) }}" title="{{ 'label_edit'|trans }}" id="view_button">
                             {{ 'label_edit'|trans }}
+                            {% endif %}
                         </a>
                         {%  if not category.tasks|length %}
                             <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'label_delete'|trans }}" id="view_button">
