@@ -60,7 +60,7 @@ class User implements UserInterface
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=255)
      *
      */
     private $password;

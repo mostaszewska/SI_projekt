@@ -74,10 +74,24 @@ class TaskRepository extends ServiceEntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(array $filters): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
+        $qb = $this->getOrCreateQueryBuilder()
+            ->innerJoin('task.category', 'category')
+            ->leftJoin('task.tags', 'tags')
             ->orderBy('task.updatedAt', 'DESC');
+
+        if(array_key_exists('category_id', $filters) && $filters['category_id'] > 0) {
+            $qb->andWhere('category.id = :category_id')
+                ->setParameter('category_id', $filters['category_id']);
+        }
+
+        if(array_key_exists('tag_id', $filters) && $filters['tag_id'] > 0) {
+            $qb->andWhere('tags.id = :tag_id')
+                ->setParameter('tag_id', $filters['tag_id']);
+        }
+
+        return $qb;
     }
 
     /**
@@ -93,16 +107,6 @@ class TaskRepository extends ServiceEntityRepository
 
         $queryBuilder->andWhere('task.author = :author')
             ->setParameter('author', $user);
-
-        return $queryBuilder;
-    }
-
-    public function queryByCategoryId(String $categoryId): QueryBuilder
-    {
-        $queryBuilder = $this->queryAll();
-
-        $queryBuilder->andWhere('task.category_id = :category_id')
-            ->setParameter('category_id', $categoryId);
 
         return $queryBuilder;
     }

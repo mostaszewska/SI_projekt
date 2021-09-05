@@ -56,12 +56,12 @@
                             {{ 'action_view'|trans }}
                         </a>
 
-                        {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN')  == false %}
+                        {% if is_granted('EDIT', answer) %}
                             <a href="{{ url('answer_edit', {id: answer.id}) }}" title="view" id="view_button">
                                 {{ 'action_edit'|trans }}
                             </a>
                         {% endif %}
-                        {% if is_granted('ROLE_USER') %}
+                        {% if is_granted('DELETE', answer) %}
                             <a href="{{ url('answer_delete', {id: answer.id}) }}" title="view" id="view_button">
                                 {{ 'action_delete'|trans }}
                             </a>

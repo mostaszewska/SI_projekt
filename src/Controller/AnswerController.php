@@ -166,154 +166,103 @@ class AnswerController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
+    /**
+     * Edit action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Answer $answer Answer entity
+     * @param \App\Repository\AnswerRepository $answerRepository Answer repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/edit",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="answer_edit",
+     * )
+     *
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="answer",
+     * )
+     */
+    public function edit(Request $request, Answer $answer, AnswerRepository $answerRepository): Response
+    {
+        $form = $this->createForm(AnswerType::class, $answer, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $answerRepository->save($answer);
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('task_index');
+        }
+
+        return $this->render(
+            'answer/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'answer' => $answer,
+            ]
+        );
+    }
+
+    /**
+     * Delete action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Answer $answer Answer entity
+     * @param \App\Repository\AnswerRepository $answerRepository Answer repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/delete",
+     *     methods={"GET", "DELETE"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="answer_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="answer",
+     * )
+     */
+    public function delete(Request $request, Answer $answer, AnswerRepository $answerRepository): Response
+    {
+        $form = $this->createForm(FormType::class, $answer, ['method' => 'DELETE']);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $answerRepository->delete($answer);
+            $this->addFlash('success', 'message_deleted_successfully');
+
+            return $this->redirectToRoute('task_index');
+        }
+
+        return $this->render(
+            'answer/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'answer' => $answer,
+            ]
+        );
+    }
+
+
+
 }
 
-///**
-// * Edit action.
-// *
-// * @param Request $request HTTP request
-// * @param Answer $answer answer entity
-// * @return Response HTTP response
-// *
-// * @Route(
-// *     "/{id}/edit",
-// *     methods={"GET", "PUT"},
-// *     requirements={"id": "[1-9]\d*"},
-// *     name="answer_edit",
-// * )
-// * @IsGranted(
-// *     "EDIT",
-// *     subject="answer",
-// * )
-// */
-//public function edit(Request $request, Answer $answer): Response
-//{
-//    $form = $this->createForm(AnswerType::class, $answer, ['method' => 'PUT']);
-//    $form->handleRequest($request);
-//
-//    if ($form->isSubmitted() && $form->isValid()) {
-//        $this->answerService->save($answer);
-//        $this->addFlash('success', 'message_updated_successfully');
-//
-//        return $this->redirectToRoute('answer_index');
-//    }
-//    if ( $this->denyAccessUnlessGranted('EDIT', $answer)){//$answer->getAuthor() !== $this->getUser()) {
-//
-//        $this->addFlash('warning', 'message.item_not_found');
-//
-//        return $this->redirectToRoute('answer_index');
-//    }
-//    return $this->render(
-//        'answer/edit.html.twig',
-//        [
-//            'form' => $form->createView(),
-//            'answer' => $answer,
-//        ]
-//    );
-//}
-//
-//
-///**
-// * Indication action.
-// *
-// * @param Request $request HTTP request
-// * @param Answer $answer answer entity
-// * @return Response HTTP response
-// *
-// * @Route(
-// *     "/{id}/indication",
-// *     methods={"GET", "PUT"},
-// *     requirements={"id": "[1-9]\d*"},
-// *     name="answer_indication",
-// * )
-// * @IsGranted("ROLE_ADMIN")
-// *
-// * )
-// */
-//public function indication(Request $request, Answer $answer): Response
-//{
-//    $form = $this->createForm(AnswerIndicationType::class, $answer, ['method' => 'PUT']);
-//    $form->handleRequest($request);
-//
-//    if ($form->isSubmitted() && $form->isValid()) {
-//        $this->answerService->save($answer);
-//        $this->addFlash('success', 'message_updated_successfully');
-//
-//        return $this->redirectToRoute('answer_index');
-//    }
-//
-//    return $this->render(
-//        'answer/indication.html.twig',
-//        [
-//            'form' => $form->createView(),
-//            'answer' => $answer,
-//        ]
-//    );
-//}
-///**
-// * Delete action.
-// * @param Request $request HTTP request
-// * @param Answer $answer answer entity
-// * @return Response HTTP response
-// *
-// * @Route(
-// *     "/{id}/delete",
-// *     methods={"GET", "DELETE"},
-// *     requirements={"id": "[1-9]\d*"},
-// *     name="answer_delete",
-// * )
-// * @IsGranted(
-// *     "ROLE_USER",
-// * )
-// */
-//public function delete(Request $request, Answer $answer): Response
-//{
-//
-//    $form = $this->createForm(FormType::class, $answer, ['method' => 'DELETE']);
-//    $form->handleRequest($request);
-//
-//    if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
-//        $form->submit($request->request->get($form->getName()));
-//    }
-//
-//    if ($form->isSubmitted() && $form->isValid()) {
-//        $this->answerService->delete($answer);
-//        $this->addFlash('success', 'message_deleted_successfully');
-//
-//        return $this->redirectToRoute('task_index');
-//    }
-//    if ($this->isGranted('ROLE_ADMIN')){
-//        return $this->render(
-//            'answer/delete.html.twig',
-//            [
-//                'form' => $form->createView(),
-//                'answer' => $answer,
-//            ]
-//        );
-//    }
-//    if ($this->isGranted('ROLE_USER')) {
-//        if ($this->denyAccessUnlessGranted('DELETE', $answer)){//$answer->getAuthor() !== $this->getUser()) {
-//            $this->addFlash('warning', 'message.item_not_found');
-//
-//            return $this->redirectToRoute('task_index');
-//        }
-//
-//        return $this->render(
-//            'answer/delete.html.twig',
-//            [
-//                'form' => $form->createView(),
-//                'answer' => $answer,
-//            ]
-//        );
-//    }
-//
-//    return $this->render(
-//        'answer/delete.html.twig',
-//        [
-//            'form' => $form->createView(),
-//            'answer' => $answer,
-//        ]
-//    );
-//}
-//
-//
+

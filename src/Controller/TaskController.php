@@ -9,8 +9,9 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\AnswerRepository;
 use App\Repository\TaskRepository;
-use Doctrine\ORM\QueryBuilder;
+use App\Service\TaskService;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,18 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TaskController extends AbstractController
 {
+    /**
+     * Task service.
+     *
+     * @var \App\Service\TaskService
+     */
+    private $taskService;
+
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
     /**
      * Index action.
      *
@@ -41,13 +54,19 @@ class TaskController extends AbstractController
      */
     public function index(Request $request, TaskRepository $taskRepository, PaginatorInterface $paginator): Response
     {
-        $categoryId = $request->query->get('filters_category_id');
+        $filters = [];
+        $categoryId = $request->query->getInt('filters_category_id');
+        $tagId = $request->query->getInt('filters_tag_id');
 
         if ($categoryId) {
-            $qb = $taskRepository->queryByCategoryId($categoryId);
-        } else {
-            $qb = $taskRepository->queryAll();
+            $filters['category_id'] = $categoryId;
         }
+
+        if ($tagId) {
+            $filters['tag_id'] = $tagId;
+        }
+
+        $qb = $taskRepository->queryAll($filters);
 
         $pagination = $paginator->paginate(
             $qb,
@@ -144,6 +163,11 @@ class TaskController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="task_edit",
      * )
+     *
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="task",
+     * )
      */
     public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
@@ -183,6 +207,11 @@ class TaskController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="task_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="task",
      * )
      */
     public function delete(Request $request, Task $task, TaskRepository $taskRepository): Response
