@@ -35,31 +35,33 @@
     </nav>
 </div>
 <div class="login">
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <div style="color: white">{{ app.user.email }}</div>
-        {% if is_granted('ROLE_USER')%}
-            <div>
+    <nav id="login">
+        <ul>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <li style="color: dodgerblue">{{ app.user.email }}</li>
+            {% if is_granted('ROLE_USER')%}
+            <li>
                 <a href="{{ url('user_show', {id: app.user.id}) }}" title="show user">{{ 'my_data'|trans }}</a>
 
                 <a href="{{ url('user_edit', {id: app.user.id}) }}">{{ 'button_user_edit'|trans }}</a>
-            </div>
+            </li>
         {% endif %}
-        <div>
-            <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
-        </div>
-    {% else %}
-        <div>
-            <a href="{{ url('app_login') }}">{{ 'action_login'|trans }}</a>
-        </div>
-    {% endif %}
-    {% if is_granted('ROLE_USER') == false %}
-        <div>
-            <a href="{{ url('user_registration') }}">{{ 'make_account'|trans }}</a>
-        </div>
-    {% endif %}
-
+            <li>
+                <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ url('app_login') }}">{{ 'action_login'|trans }}</a>
+            </li>
+        {% endif %}
+        {% if is_granted('ROLE_USER') == false %}
+            <li>
+                <a href="{{ url('user_registration') }}">{{ 'make_account'|trans }}</a>
+            </li>
+        {% endif %}
+        </ul>
+    </nav>
 </div>
-
 <div class="container-fluid">
     {% for type, messages in app.session.flashBag.all %}
         {% for message in messages %}

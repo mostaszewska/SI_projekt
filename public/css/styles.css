@@ -21,17 +21,30 @@
 }
 
 /* Change the link color to #111 (black) on hover */
-li a:hover {
+#menu li a:hover {
     background-color: #111;
 }
-
-.login{
-    position: absolute;
-    right: 16px;
-    font-size: 18px;
-    padding: 15px 15px;
-    top:6px;
+#login ul {
+    list-style-type: none;
+    margin: 0px 5px;
+    overflow: hidden;
+    position: sticky;
+    position: relative;
 }
+
+#login li {
+    float: right;
+    padding: 10px;
+}
+
+#login li a {
+    display: inline;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    padding: 0px 10px;
+}
+
 .login div a{
     text-decoration: none;
 }

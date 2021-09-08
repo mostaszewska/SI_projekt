@@ -122,8 +122,8 @@
                 <source>label_author</source>
                <target>Autor</target>
             </trans-unit>
-            <trans-unit id="label_indication">
-                 <source>label_indication</source>
+            <trans-unit id="label_favourite">
+                 <source>label_favourite</source>
                  <target>Wyróżnienie</target>
             </trans-unit>
              <trans-unit id="label_email">
@@ -270,16 +270,16 @@
                    <source>answer_add</source>
                    <target>Dodaj odpowiedź</target>
                 </trans-unit>
-             <trans-unit id="action_indication">
-                   <source>action_indication</source>
+             <trans-unit id="action_favourite">
+                   <source>action_favourite</source>
                    <target>Wyróżnij odpowiedź</target>
              </trans-unit>
                <trans-unit id="action_delete_task">
                       <source>action_delete_task</source>
                       <target>Usuń pytanie</target>
                 </trans-unit>
-               <trans-unit id="title_answer_indication">
-                      <source>title_answer_indication</source>
+               <trans-unit id="title_answer_favourite">
+                      <source>title_answer_favourite</source>
                       <target>Wyróżnienie odpowiedzi</target>
                 </trans-unit>
                 <trans-unit id="my_data">

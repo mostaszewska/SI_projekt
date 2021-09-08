@@ -18,9 +18,12 @@
             <dd>{{ user.email }}</dd>
         </dl>
         <p>
+            {% elseif is_granted('ROLE_ADMIN') %}
             <a href="{{ url('user_index') }}" title="{{ 'action_back_to_list'|trans }}" id="view_button">
                 {{ 'action_back_to_list'|trans }}
             </a>
+
+
         </p>
     {% else %}
         <p>

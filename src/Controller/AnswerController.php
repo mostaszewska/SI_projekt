@@ -6,20 +6,18 @@
 namespace App\Controller;
 
 use App\Entity\Answer;
-use App\Service\AnswerService;
-use App\Entity\Task;
-use App\Form\AnswerType;
 use App\Form\AnswerAnonimType;
+use App\Form\AnswerType;
+use App\Form\AnswerFavouriteType;
 use App\Repository\AnswerRepository;
-use App\Repository\TaskRepository;
+use App\Service\AnswerService;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class AnswerController.
@@ -35,7 +33,6 @@ class AnswerController extends AbstractController
      */
     private $answerService;
 
-
     public function __construct(AnswerService $answerService)
     {
         $this->answerService = $answerService;
@@ -44,9 +41,9 @@ class AnswerController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\AnswerRepository $answerRepository Answer repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
+     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator        Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -69,7 +66,6 @@ class AnswerController extends AbstractController
             ['pagination' => $pagination]
         );
     }
-
 
     /**
      * Show action.
@@ -97,6 +93,7 @@ class AnswerController extends AbstractController
      * Answer action.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -111,7 +108,7 @@ class AnswerController extends AbstractController
         $form = $this->createForm(AnswerAnonimType::class, $answer);
         $form->handleRequest($request);
 
-        if ($this->isGranted('ROLE_USER') === false) {
+        if (false === $this->isGranted('ROLE_USER')) {
             if ($form->isSubmitted() && $form->isValid()) {
                 // $answer->setAuthorName($this-> getAuthorName);
                 $answer->setcreatedAt(new \DateTime());
@@ -120,10 +117,9 @@ class AnswerController extends AbstractController
                 $this->addFlash('success', 'message_created_successfully');
 
                 return $this->redirectToRoute('task_index');
-
             }
-
         }
+
         return $this->render(
             'answer/add.html.twig',
             ['form' => $form->createView()]
@@ -133,8 +129,8 @@ class AnswerController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\AnswerRepository $answerRepository Answer repository
+     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
+     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -170,9 +166,9 @@ class AnswerController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Answer $answer Answer entity
-     * @param \App\Repository\AnswerRepository $answerRepository Answer repository
+     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
+     * @param \App\Entity\Answer                        $answer           Answer entity
+     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -215,9 +211,9 @@ class AnswerController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Answer $answer Answer entity
-     * @param \App\Repository\AnswerRepository $answerRepository Answer repository
+     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
+     * @param \App\Entity\Answer                        $answer           Answer entity
+     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -261,8 +257,43 @@ class AnswerController extends AbstractController
         );
     }
 
+    /**
+     * Favourite action.
+     *
+     * @param Request $request HTTP request
+     * @param Answer $answer answer entity
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/favourite",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="answer_favourite",
+     * )
+     * @IsGranted(
+     *     "FAVOURITE",
+     *     subject="answer",
+     * )
+     */
+    public function favourite(Request $request, Answer $answer): Response
+    {
+        $form = $this->createForm(AnswerFavouriteType::class, $answer, ['method' => 'PUT']);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->answerService->save($answer);
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('task_index');
+        }
+
+        return $this->render(
+            'answer/favourite.html.twig',
+            [
+                'form' => $form->createView(),
+                'answer' => $answer,
+            ]
+        );
+    }
 
 }
-
-

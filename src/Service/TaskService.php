@@ -7,11 +7,6 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Repository\TaskRepository;
-use App\Repository\TagRepository;
-use App\Repository\CategoryRepository;
-use App\Service\CategoryService;
-use App\Service\TagService;
-
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

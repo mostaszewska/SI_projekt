@@ -7,9 +7,6 @@ namespace App\Service;
 
 use App\Entity\Answer;
 use App\Repository\AnswerRepository;
-use App\Controller\AnswerController;
-use App\Repository\TaskRepository;
-use App\Service\TaskService;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

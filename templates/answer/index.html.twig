@@ -19,7 +19,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'answer.createdAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'answer.updatedAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_text'|trans, 'answer.text') }}</th>
-                <th>{{ 'label_favourtie'|trans }}</th>
+                <th>{{ 'label_favourite'|trans }}</th>
                 <th>{{ 'label_author'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
@@ -66,11 +66,11 @@
                                 {{ 'action_delete'|trans }}
                             </a>
                         {% endif %}
-{#                        {% if is_granted('ROLE_ADMIN') %}#}
-{#                            <a href="{{ url('answer_favourite', {id: answer.id}) }}" title="view" id="view_button">#}
-{#                                {{ 'action_favourite'|trans }}#}
-{#                            </a>#}
-{#                        {% endif %}#}
+                        {% if is_granted('FAVOURITE', answer) %}
+                            <a href="{{ url('answer_favourite', {id: answer.id}) }}" title="view" id="view_button">
+                                {{ 'action_favourite'|trans }}
+                            </a>
+                        {% endif %}
                         {% if is_granted('ROLE_USER') %}
                             {% if not answer.task|length %}
                                 <a href="{{ url('task_delete', {id: answer.task.id}) }}" title="view" id="view_button">
@@ -78,11 +78,6 @@
                                 </a>
                             {% endif %}
                         {% endif %}
-
-                        {#  <a href="{{ url('answer_index', {'filters_question_id' : answer.question.id}) }}" title="{{ answer.question.id }}" id="view_button">
-                            {{ answer.question.id }}
-                        </a>
-                        #}
 
                     </td>
 

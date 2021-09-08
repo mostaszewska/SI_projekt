@@ -20,6 +20,7 @@ class AnswerVoter extends Voter
     const VIEW = 'VIEW';
     const EDIT = 'EDIT';
     const DELETE = 'DELETE';
+    const FAVOURITE = 'FAVOURITE';
 
     /**
      * Security helper.
@@ -46,7 +47,7 @@ class AnswerVoter extends Voter
     protected function supports($attribute, $subject)
     {
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE, self::FAVOURITE])) {
             return false;
         }
 
@@ -83,6 +84,7 @@ class AnswerVoter extends Voter
 
         switch ($attribute) {
             case self::VIEW:
+            case self::FAVOURITE:
             case self::EDIT:
             case self::DELETE:
                 return $this->hasAccess($answer, $user);
