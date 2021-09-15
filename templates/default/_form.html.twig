@@ -22,7 +22,7 @@ parameters:
         {% if page_title_param is defined %}{{ page_title|trans(page_title_param) }}{% else %}{{ page_title|trans }}{% endif %}
     </h1>
 
-    {{ form_start(form, { method: attr.method|default('POST'), action: attr.action }) }}
+    {{ form_start(form, { method: attr.method|default('POST'), action: attr.action, attr: attr.attr|default({}) }) }}
     {% if false == form.vars.valid %}
         {% include 'default/_single_flash_message.html.twig' with {
             type: 'danger',

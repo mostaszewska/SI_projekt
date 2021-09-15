@@ -2,7 +2,8 @@
     page_title: 'title_answer_create',
     attr: {
         method: 'POST',
-        action: url('answer_create')
+        action: url('answer_create'),
+        attr: {novalidate:'novalidate'}
     },
     form: form,
     submit_label: 'answer_create'|trans,

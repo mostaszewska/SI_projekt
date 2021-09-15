@@ -23,7 +23,6 @@ class TaskService
      */
     private $taskRepository;
 
-
     /**
      * Paginator.
      *
@@ -37,8 +36,6 @@ class TaskService
      * @var \App\Service\CategoryService
      */
     private $categoryService;
-
-
 
     /**
      * Tag service.
@@ -74,39 +71,17 @@ class TaskService
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
-
-    }
-    /**
-     * Create paginated list.
-     *
-     *
-     * @param int                                                   $page Page number
-     * @param UserInterface $user    User entity
-     * @param array                                               $filters Filters array
-     *
-     * @return PaginationInterface Paginated list
-     */
-    public function getByCategoryId(int $page, UserInterface $user, String $categoryId): PaginationInterface
-    {
-        $filters = $this->prepareFilters($filters);
-
-        return $this->paginator->paginate(
-            $this->taskRepository->queryByAuthor($user, $filters),
-            $page,
-            TaskRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
     }
 
     /**
      * Create paginated list.
-     *
      *
      * @param int $page Page number
      * @param array $filters Filters array
      *
      * @return PaginationInterface Paginated list
      */
-    public function createPaginatedListNotAuthor(int $page, array $filters = []): PaginationInterface
+    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 

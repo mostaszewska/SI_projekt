@@ -61,13 +61,27 @@ class UserService
      * Save category.
      *
      * @param \App\Entity\User $user User entity
+     * @param string|null $newPassword
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(User $user): void
+    public function save(User $user, string $newPassword = null): void
     {
-        $this->userRepository->save($user);
+        $this->userRepository->save($user, $newPassword);
+    }
+
+    /**
+     * Register user
+     *
+     * @param \App\Entity\User $user
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function register(User $user)
+    {
+        $user->setRoles([User::ROLE_USER]);
+        $this->save($user, $user->getPassword());
     }
 
     /**

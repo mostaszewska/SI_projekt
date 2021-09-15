@@ -4,6 +4,7 @@
     attr: {
         method: 'PUT',
         action: url('category_edit', {'id': category.id}),
+        attr: {novalidate:'novalidate'}
     },
     form: form,
     back_to_list_path: 'category_index',

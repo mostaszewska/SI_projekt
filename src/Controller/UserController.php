@@ -7,11 +7,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserdataType;
-use App\Repository\UserRepository;
 use App\Service\UserService;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +29,9 @@ class UserController extends AbstractController
      */
     private $userService;
 
-
+    /**
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -43,8 +41,6 @@ class UserController extends AbstractController
      * Index action.
      *
      * @param Request $request HTTP request
-     * @param UserRepository $userRepository User repository
-     * @param PaginatorInterface $paginator Paginator
      *
      * @return Response HTTP response
      *
@@ -56,13 +52,9 @@ class UserController extends AbstractController
      *
      * @IsGranted("ROLE_ADMIN")
      */
-    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $userRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            UserRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $pagination = $this->userService->createPaginatedList($request->query->getInt('page', 1));
 
         return $this->render(
             'user/index.html.twig',
@@ -97,7 +89,6 @@ class UserController extends AbstractController
      *
      * @param Request $request HTTP request
      * @param User $user
-     * @param UserRepository $userRepository
      * @return Response HTTP response
      *
      * @Route(
@@ -107,7 +98,7 @@ class UserController extends AbstractController
      *     name="user_edit",
      * )
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user): Response
     {
         $log = $this->getUser();
         if ($this->isGranted('ROLE_ADMIN') ) {
@@ -116,7 +107,7 @@ class UserController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $newPassword = $form->get('newPassword')->getData();
-                $userRepository->save($user, $newPassword);
+                $this->userService->save($user, $newPassword);
 
                 $this->addFlash('success', 'message_updated_successfully');
 
@@ -138,7 +129,7 @@ class UserController extends AbstractController
 
                 if ($form->isSubmitted() && $form->isValid()) {
                     $newPassword = $form->get('newPassword')->getData();
-                    $userRepository->save($log, $newPassword);
+                    $this->userService->save($log, $newPassword);
 
                     $this->addFlash('success', 'message_updated_successfully');
 
@@ -157,5 +148,4 @@ class UserController extends AbstractController
             }
         }
     }
-
 }

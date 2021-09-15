@@ -9,9 +9,7 @@ use App\Entity\Answer;
 use App\Form\AnswerAnonimType;
 use App\Form\AnswerType;
 use App\Form\AnswerFavouriteType;
-use App\Repository\AnswerRepository;
 use App\Service\AnswerService;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -42,8 +40,6 @@ class AnswerController extends AbstractController
      * Index action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
-     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator        Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -53,13 +49,12 @@ class AnswerController extends AbstractController
      *     name="answer_index",
      * )
      */
-    public function index(Request $request, AnswerRepository $answerRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $answerRepository->queryByTaskId($request->query->get('filters_task_id')),
-            $request->query->getInt('page', 1),
-            AnswerRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $taskId = $request->query->getInt('filters_task_id');
+
+        $pagination = $this->answerService->createPaginatedList($taskId, $page);
 
         return $this->render(
             'answer/index.html.twig',
@@ -130,7 +125,6 @@ class AnswerController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
-     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -143,7 +137,7 @@ class AnswerController extends AbstractController
      *     name="answer_create",
      * )
      */
-    public function create(Request $request, AnswerRepository $answerRepository): Response
+    public function create(Request $request): Response
     {
         $answer = new Answer();
         $form = $this->createForm(AnswerType::class, $answer);
@@ -151,7 +145,7 @@ class AnswerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $answer->setAuthor($this->getUser());
-            $answerRepository->save($answer);
+            $this->answerService->save($answer);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('task_index');
@@ -168,7 +162,6 @@ class AnswerController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
      * @param \App\Entity\Answer                        $answer           Answer entity
-     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -187,13 +180,13 @@ class AnswerController extends AbstractController
      *     subject="answer",
      * )
      */
-    public function edit(Request $request, Answer $answer, AnswerRepository $answerRepository): Response
+    public function edit(Request $request, Answer $answer): Response
     {
         $form = $this->createForm(AnswerType::class, $answer, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $answerRepository->save($answer);
+            $this->answerService->save($answer);
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('task_index');
@@ -213,7 +206,6 @@ class AnswerController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
      * @param \App\Entity\Answer                        $answer           Answer entity
-     * @param \App\Repository\AnswerRepository          $answerRepository Answer repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -232,7 +224,7 @@ class AnswerController extends AbstractController
      *     subject="answer",
      * )
      */
-    public function delete(Request $request, Answer $answer, AnswerRepository $answerRepository): Response
+    public function delete(Request $request, Answer $answer): Response
     {
         $form = $this->createForm(FormType::class, $answer, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -242,7 +234,7 @@ class AnswerController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $answerRepository->delete($answer);
+            $this->answerService->delete($answer);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('task_index');

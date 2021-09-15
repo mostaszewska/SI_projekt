@@ -77,7 +77,14 @@ class TaskRepository extends ServiceEntityRepository
     public function queryAll(array $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial task.{id, createdAt, updatedAt, title}',
+                'partial category.{id, title}',
+                'partial tags.{id, title}',
+                'partial author.{id, email}'
+            )
             ->innerJoin('task.category', 'category')
+            ->innerJoin('task.author', 'author')
             ->leftJoin('task.tags', 'tags')
             ->orderBy('task.updatedAt', 'DESC');
 

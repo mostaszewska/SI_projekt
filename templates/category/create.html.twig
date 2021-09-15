@@ -2,7 +2,8 @@
     page_title: 'title_category_create',
     attr: {
         method: 'POST',
-        action: url('category_create')
+        action: url('category_create'),
+        attr: {novalidate:'novalidate'}
     },
     form: form,
     submit_label: 'action_create'|trans,

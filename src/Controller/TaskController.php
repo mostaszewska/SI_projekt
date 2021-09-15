@@ -7,10 +7,8 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
-use App\Repository\AnswerRepository;
-use App\Repository\TaskRepository;
+use App\Service\AnswerService;
 use App\Service\TaskService;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -32,17 +30,23 @@ class TaskController extends AbstractController
      */
     private $taskService;
 
+    /**
+     * Answer service.
+     *
+     * @var \App\Service\AnswerService
+     */
+    private $answerService;
 
-    public function __construct(TaskService $taskService)
+    public function __construct(TaskService $taskService, AnswerService $answerService)
     {
         $this->taskService = $taskService;
+        $this->answerService = $answerService;
     }
+
     /**
      * Index action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\TaskRepository            $taskRepository Task repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -52,7 +56,7 @@ class TaskController extends AbstractController
      *     name="task_index",
      * )
      */
-    public function index(Request $request, TaskRepository $taskRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
         $filters = [];
         $categoryId = $request->query->getInt('filters_category_id');
@@ -66,12 +70,9 @@ class TaskController extends AbstractController
             $filters['tag_id'] = $tagId;
         }
 
-        $qb = $taskRepository->queryAll($filters);
-
-        $pagination = $paginator->paginate(
-            $qb,
+        $pagination = $this->taskService->createPaginatedList(
             $request->query->getInt('page', 1),
-            TaskRepository::PAGINATOR_ITEMS_PER_PAGE
+            $filters
         );
 
         return $this->render(
@@ -94,13 +95,9 @@ class TaskController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(Request $request, Task $task, PaginatorInterface $paginator, AnswerRepository $answerRepository): Response
+    public function show(Request $request, Task $task): Response
     {
-        $pagination = $paginator->paginate(
-            $answerRepository->queryByTaskId($task->getId()),
-            $request->query->getInt('page', 1),
-            AnswerRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $pagination = $this->answerService->createPaginatedList($task->getId(), $request->query->getInt('page', 1));
 
         return $this->render(
             'task/show.html.twig',
@@ -112,7 +109,6 @@ class TaskController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\TaskRepository            $taskRepository Task repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -125,7 +121,7 @@ class TaskController extends AbstractController
      *     name="task_create",
      * )
      */
-    public function create(Request $request, TaskRepository $taskRepository): Response
+    public function create(Request $request): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -133,7 +129,8 @@ class TaskController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setAuthor($this->getUser());
-            $taskRepository->save($task);
+            $this->taskService->save($task);
+
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('task_index');
@@ -150,7 +147,6 @@ class TaskController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
      * @param \App\Entity\Task                          $task           Task entity
-     * @param \App\Repository\TaskRepository            $taskRepository Task repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -169,13 +165,14 @@ class TaskController extends AbstractController
      *     subject="task",
      * )
      */
-    public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
+    public function edit(Request $request, Task $task): Response
     {
         $form = $this->createForm(TaskType::class, $task, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $taskRepository->save($task);
+            $this->taskService->save($task);
+
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('task_index');
@@ -195,7 +192,6 @@ class TaskController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
      * @param \App\Entity\Task                          $task           Task entity
-     * @param \App\Repository\TaskRepository            $taskRepository Task repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -214,7 +210,7 @@ class TaskController extends AbstractController
      *     subject="task",
      * )
      */
-    public function delete(Request $request, Task $task, TaskRepository $taskRepository): Response
+    public function delete(Request $request, Task $task): Response
     {
         $form = $this->createForm(FormType::class, $task, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -224,7 +220,8 @@ class TaskController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $taskRepository->delete($task);
+            $this->taskService->delete($task);
+
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('task_index');

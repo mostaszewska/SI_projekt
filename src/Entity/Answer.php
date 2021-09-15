@@ -6,9 +6,7 @@ use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AnswerRepository::class)
@@ -55,6 +53,13 @@ class Answer
      *     length=255,
      * )
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="10",
+     *     max="255",
+     * )
      */
     private $text;
 
@@ -80,10 +85,12 @@ class Answer
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
+     *
+     * @Assert\Length(
+     *     max="64"
+     * )
      */
     private $nick;
-
-
 
     public function getId(): ?int
     {
@@ -136,7 +143,7 @@ class Answer
         return $this->text;
     }
 
-    public function setText(string $text): self
+    public function setText(?string $text): self
     {
         $this->text = $text;
 

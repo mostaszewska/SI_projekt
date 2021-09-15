@@ -7,9 +7,7 @@ namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Form\TagType;
-use App\Repository\TagRepository;
 use App\Service\TagService;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -56,7 +54,7 @@ class TagController extends AbstractController
      *     name="tag_index",
      * )
      */
-    public function index(Request $request, TagRepository $tagRepository, PaginatorInterface $paginator)
+    public function index(Request $request)
     {
         $page = $request->query->getInt('page', 1);
         $pagination = $this->tagService->createPaginatedList($page);

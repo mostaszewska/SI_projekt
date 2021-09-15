@@ -4,6 +4,7 @@
     attr: {
         method: 'PUT',
         action: url('tag_edit', {'id': tag.id}),
+        attr: {novalidate:'novalidate'}
     },
     form: form,
     back_to_list_path: 'tag_index',

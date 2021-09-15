@@ -57,45 +57,25 @@ class AnswerService
         $this->paginator = $paginator;
         $this->taskService = $taskService;
     }
-    /**
-     * Create paginated list.
-     *
-     * @param int $page Page number
-     *
-     * @param UserInterface $user User entity
-     * @param array                                               $filters Filters array
-     *
-     *@return PaginationInterface Paginated list
-     */
-    public function createPaginatedListAuthor(int $page, UserInterface $user, array $filters = []): PaginationInterface
-    {
-        $filters = $this->prepareFilters($filters);
-
-        return $this->paginator->paginate(
-            $this->answerRepository->queryByAuthor($user, $filters),
-            $page,
-            AnswerRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
-    }
 
     /**
      * Create paginated list.
      *
-     * @param int $page Page number
-     *
-     * @param array $filters Filters array
-     * @return PaginationInterface Paginated list
+     * @param int $taskId
+     * @param int $page
+     * @return PaginationInterface
      */
-    public function createPaginatedListNotAuthor(int $page, array $filters = []): PaginationInterface
+    public function createPaginatedList(int $taskId, int $page = 1)
     {
-        $filters = $this->prepareFilters($filters);
-
-        return $this->paginator->paginate(
-            $this->answerRepository->queryAll($filters),
+        $pagination = $this->paginator->paginate(
+            $this->answerRepository->queryByTaskId($taskId),
             $page,
             AnswerRepository::PAGINATOR_ITEMS_PER_PAGE
         );
+
+        return $pagination;
     }
+
     /**
      * Save Answer.
      *

@@ -6,7 +6,7 @@
 
 {% block body %}
     <h1>{{ 'name_tag_create'|trans }}</h1>
-    {{ form_start(form, { method: 'POST', action: url('tag_create') }) }}
+    {{ form_start(form, { method: 'POST', action: url('tag_create'), attr: {novalidate:'novalidate'} }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'action_save'|trans }}" id="view_button" />

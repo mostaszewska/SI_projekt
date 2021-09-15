@@ -66,9 +66,14 @@ class Category
      *     type="string",
      *     length=64,
      * )
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="3",
+     *     max="64",
+     * )
      */
     private $title;
-
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="category")
@@ -83,8 +88,6 @@ class Category
      * @ORM\Column(
      *     type="string",
      *     length=64,
-     * )
-     *
      * )
      *
      * @Gedmo\Slug(fields={"title"})
