@@ -40,9 +40,9 @@ class AnswerService
     /**
      * AnswerService constructor.
      *
-     * @param AnswerRepository         $answerRepository Answer repository
-     * @param PaginatorInterface       $paginator        Paginator
-     * @param \App\Service\QuestionService $questionService      Question service
+     * @param AnswerRepository             $answerRepository Answer repository
+     * @param PaginatorInterface           $paginator        Paginator
+     * @param \App\Service\QuestionService $questionService  Question service
      */
     public function __construct(AnswerRepository $answerRepository, PaginatorInterface $paginator, QuestionService $questionService)
     {

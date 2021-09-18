@@ -128,7 +128,6 @@ class Question
      */
     private $answers;
 
-
     /**
      * Question constructor.
      */
@@ -261,11 +260,19 @@ class Question
         }
     }
 
+    /**
+     * @return \App\Entity\User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param \App\Entity\User|null $author
+     *
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
@@ -273,11 +280,19 @@ class Question
         return $this;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
     public function getAnswers(): Collection
     {
         return $this->answers;
     }
 
+    /**
+     * @param \Doctrine\Common\Collections\Collection $answers
+     *
+     * @return $this
+     */
     public function setAnswers(Collection $answers): self
     {
         $this->answers = $answers;
@@ -285,11 +300,19 @@ class Question
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getText(): ?string
     {
         return $this->text;
     }
 
+    /**
+     * @param string|null $text
+     *
+     * @return $this
+     */
     public function setText(?string $text): self
     {
         $this->text = $text;

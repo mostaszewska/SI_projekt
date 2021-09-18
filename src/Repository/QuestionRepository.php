@@ -72,6 +72,8 @@ class QuestionRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
+     * @param array $filters
+     *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
     public function queryAll(array $filters): QueryBuilder
@@ -88,14 +90,14 @@ class QuestionRepository extends ServiceEntityRepository
             ->leftJoin('question.tags', 'tags')
             ->orderBy('question.updatedAt', 'DESC');
 
-        if (array_key_exists('category_id', $filters) && $filters['category_id'] > 0) {
+        if (array_key_exists('category', $filters)) {
             $qb->andWhere('category.id = :category_id')
-                ->setParameter('category_id', $filters['category_id']);
+                ->setParameter('category_id', $filters['category']);
         }
 
-        if (array_key_exists('tag_id', $filters) && $filters['tag_id'] > 0) {
+        if (array_key_exists('tag', $filters)) {
             $qb->andWhere('tags.id = :tag_id')
-                ->setParameter('tag_id', $filters['tag_id']);
+                ->setParameter('tag_id', $filters['tag']);
         }
 
         return $qb;

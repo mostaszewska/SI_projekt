@@ -95,7 +95,7 @@ class QuestionVoter extends Voter
 
     /**
      * @param Question $question
-     * @param User $user
+     * @param User     $user
      *
      * @return bool
      */

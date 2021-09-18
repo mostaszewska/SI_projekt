@@ -31,6 +31,9 @@ class AnswerController extends AbstractController
      */
     private $answerService;
 
+    /**
+     * @param \App\Service\AnswerService $answerService
+     */
     public function __construct(AnswerService $answerService)
     {
         $this->answerService = $answerService;

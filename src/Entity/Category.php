@@ -94,6 +94,9 @@ class Category
      */
     private $code;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -177,6 +180,11 @@ class Category
         return $this->questions;
     }
 
+    /**
+     * @param \App\Entity\Question $question
+     *
+     * @return $this
+     */
     public function addQuestion(Question $question): self
     {
         if (!$this->questions->contains($question)) {
@@ -187,6 +195,11 @@ class Category
         return $this;
     }
 
+    /**
+     * @param \App\Entity\Question $question
+     *
+     * @return $this
+     */
     public function removeQuestion(Question $question): self
     {
         if ($this->questions->removeElement($question)) {
@@ -199,11 +212,19 @@ class Category
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return $this
+     */
     public function setCode(string $code): self
     {
         $this->code = $code;

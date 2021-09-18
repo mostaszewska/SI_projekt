@@ -37,6 +37,10 @@ class QuestionController extends AbstractController
      */
     private $answerService;
 
+    /**
+     * @param \App\Service\QuestionService $questionService
+     * @param \App\Service\AnswerService   $answerService
+     */
     public function __construct(QuestionService $questionService, AnswerService $answerService)
     {
         $this->questionService = $questionService;
@@ -84,7 +88,8 @@ class QuestionController extends AbstractController
     /**
      * Show action.
      *
-     * @param \App\Entity\Question $question Question entity
+     * @param \Symfony\Component\HttpFoundation\Request $request  HTTP request
+     * @param \App\Entity\Question                      $question Question entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -145,8 +150,8 @@ class QuestionController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Question                          $question    Question entity
+     * @param \Symfony\Component\HttpFoundation\Request $request  HTTP request
+     * @param \App\Entity\Question                      $question Question entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -190,8 +195,8 @@ class QuestionController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Question                          $question    Question entity
+     * @param \Symfony\Component\HttpFoundation\Request $request  HTTP request
+     * @param \App\Entity\Question                      $question Question entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *

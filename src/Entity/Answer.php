@@ -1,4 +1,7 @@
 <?php
+/**
+ * Answer
+ */
 
 namespace App\Entity;
 
@@ -92,6 +95,9 @@ class Answer
      */
     private $nick;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -137,11 +143,19 @@ class Answer
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @return string|null
+     */
     public function getText(): ?string
     {
         return $this->text;
     }
 
+    /**
+     * @param string|null $text
+     *
+     * @return $this
+     */
     public function setText(?string $text): self
     {
         $this->text = $text;
@@ -149,11 +163,19 @@ class Answer
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getFavourite(): ?bool
     {
         return $this->favourite;
     }
 
+    /**
+     * @param bool $favourite
+     *
+     * @return $this
+     */
     public function setFavourite(bool $favourite): self
     {
         $this->favourite = $favourite;
@@ -161,11 +183,19 @@ class Answer
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param User|null $author
+     *
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
@@ -198,7 +228,7 @@ class Answer
     /**
      * Getter for Nick
      *
-     * @return Nick|null
+     * @return string|null
      */
     public function getNick(): ?string
     {
@@ -207,9 +237,9 @@ class Answer
     /**
      * Setter for Nick
      *
-     * @param Nick|null $nick
+     * @param string|null $nick
      */
-    public function setNick(string $nick): void
+    public function setNick(?string $nick): void
     {
         $this->nick = $nick;
     }

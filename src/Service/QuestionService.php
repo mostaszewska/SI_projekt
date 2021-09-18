@@ -59,10 +59,10 @@ class QuestionService
     /**
      * CategoryService constructor.
      *
-     * @param \App\Repository\QuestionRepository          $questionRepository  Question repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator       Paginator
-     * @param \App\Service\CategoryService            $categoryService Category service
-     * @param \App\Service\TagService                 $tagService      Tag service
+     * @param \App\Repository\QuestionRepository      $questionRepository Question repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
+     * @param \App\Service\CategoryService            $categoryService    Category service
+     * @param \App\Service\TagService                 $tagService         Tag service
      */
     public function __construct(QuestionRepository $questionRepository, PaginatorInterface $paginator, CategoryService $categoryService, TagService $tagService)
     {

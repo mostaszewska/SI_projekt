@@ -110,8 +110,8 @@ class AnswerRepository extends ServiceEntityRepository
     /**
      * Query questions by author.
      *
-     * @param \App\Entity\User $user    User entity
-     * @param array            $filters
+     * @param string $questionId
+     * @param array  $filters
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
@@ -124,6 +124,7 @@ class AnswerRepository extends ServiceEntityRepository
 
         return $queryBuilder;
     }
+
     /**
      * Get or create new query builder.
      *
