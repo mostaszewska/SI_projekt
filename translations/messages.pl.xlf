@@ -26,6 +26,14 @@
                     <source>title_user_list</source>
                      <target>Lista użytkowników</target>
               </trans-unit>
+             <trans-unit id="message_deleted_successfully">
+                      <source>message_deleted_successfully</source>
+                       <target>Usunięto</target>
+                </trans-unit>
+             <trans-unit id="label_tag">
+                      <source>label_tag</source>
+                       <target>Tagi</target>
+                </trans-unit>
            <trans-unit id="menu_answer">
                <source>menu_answer</source>
                <target>Odpowiedzi</target>
