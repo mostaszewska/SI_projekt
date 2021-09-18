@@ -2,8 +2,8 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="title_task_list">
-                 <source>title_task_list</source>
+            <trans-unit id="title_question_list">
+                 <source>title_question_list</source>
                  <target>Q and A</target>
             </trans-unit>
             <trans-unit id="title_answer_list">
@@ -181,8 +181,8 @@
                 <source>make_account</source>
                  <target>Make account</target>
                </trans-unit>
-            <trans-unit id="title_task_edit">
-                  <source>title_task_edit</source>
+            <trans-unit id="title_question_edit">
+                  <source>title_question_edit</source>
                    <target>Edit task</target>
               </trans-unit>
              <trans-unit id="title_category_edit">
@@ -201,8 +201,8 @@
                                <source>communicate_delete</source>
                                <target>Are you sure?</target>
                       </trans-unit>
-            <trans-unit id="name_task_create">
-                           <source>name_task_create</source>
+            <trans-unit id="name_question_create">
+                           <source>name_question_create</source>
                            <target>Create question</target>
                   </trans-unit>
             <trans-unit id="label_none">
@@ -213,8 +213,8 @@
                  <source>action_back_to_list</source>
                  <target>Back to the list</target>
             </trans-unit>
-            <trans-unit id="title_task_details">
-                 <source>title_task_details</source>
+            <trans-unit id="title_question_details">
+                 <source>title_question_details</source>
                  <target>Question details #%id%</target>
              </trans-unit>
             <trans-unit id="title_answer_details">
@@ -317,8 +317,8 @@
                              <source>title_user_details</source>
                              <target>User data</target>
                         </trans-unit>
-                         <trans-unit id="task_delete">
-                            <source>task_delete</source>
+                         <trans-unit id="question_delete">
+                            <source>question_delete</source>
                             <target>Are you sure?</target>
                          </trans-unit>
                          <trans-unit id="label_password">
@@ -353,8 +353,8 @@
                              <source>see_task</source>
                                 <target>See question</target>
                            </trans-unit>
-                           <trans-unit id="label_task_title">
-                                 <source>label_task_title</source>
+                           <trans-unit id="label_question_title">
+                                 <source>label_question_title</source>
                                  <target>Question Title</target>
                            </trans-unit>
                             <trans-unit id="label_content_task">

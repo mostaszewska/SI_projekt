@@ -16,13 +16,13 @@
             <dd>{{ answer.updatedAt|date('Y/m/d') }}</dd>
 {#            <dt>{{ 'label_author'|trans }}</dt>#}
 {#            <dd>{{  answer.author.email }}</dd>#}
-            <dt>{{ 'label_task_title'|trans }}</dt>
-            <dd>{{  answer.task.title }}</dd>
+            <dt>{{ 'label_question_title'|trans }}</dt>
+            <dd>{{  answer.question.title }}</dd>
             <dt>{{ 'label_text'|trans }}</dt>
             <dd>{{ answer.text|markdown_to_html }}</dd>
         </dl>
         <p>
-            <a href="{{ url('answer_index', {'filters_task_id' : answer.task.id}) }}" title="{{ 'action_back_to_list'|trans }}" id="view_button">
+            <a href="{{ url('answer_index', {'filters_question_id' : answer.question.id}) }}" title="{{ 'action_back_to_list'|trans }}" id="view_button">
                 {{ 'action_back_to_list'|trans }}
             </a>
         </p>

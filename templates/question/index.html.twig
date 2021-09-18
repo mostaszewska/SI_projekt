@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_question_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_question_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'question.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'question.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'question.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'question.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.title') }}</th>
+                <th>{{ 'label_tags'|trans }}</th>
+                <th>{{ 'label_author'|trans }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+            <tbody>
+            {% if is_granted('ROLE_USER')%}
+                <a href="{{ url('question_create') }}" title="view" id="view_button">
+                    {{ 'question_create'|trans }}
+                </a>
+            {% endif %}
+
+
+
+            {% for question in pagination.items %}
+                <tr>
+                    <td>{{ question.id }}</td>
+                    <td>{{ question.createdAt|date('Y/m/d') }}</td>
+                    <td>{{ question.updatedAt|date('Y/m/d') }}</td>
+                    <td>{{ question.title }}</td>
+                    <td>
+                        <a href="{{ url('question_index', {'filters_category_id' : question.category.id}) }}" title="{{ question.category.title }}">
+                            {{ question.category.title }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if question.tags is defined and question.tags|length %}
+                            {% for tag in question.tags %}
+                                <a href="{{ url('question_index', {'filters_tag_id' : tag.id}) }}" title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                            &nbsp;&nbsp;
+                        {% endif %}
+                    </td>
+                    <td>{{ question.author.email }}</td>
+                    </td>
+                    <td>
+                        <a href="{{ url('question_show', {id: question.id}) }}" title="view" id="view_button">
+                            {{ 'action_view'|trans }}
+                        </a>
+                        {% if is_granted('EDIT', question)  %}
+                            <a href="{{ url('question_edit', {id: question.id}) }}" title="view" id="view_button">
+                                {{ 'action_edit'|trans }}
+                            </a>
+                        {% endif %}
+                        {% if is_granted('DELETE', question)  %}
+                            <a href="{{ url('question_delete', {id: question.id}) }}" title="view" id="view_button">
+                                {{ 'action_delete'|trans }}
+                            </a>
+                        {% endif %}
+                        <a href="{{ url('answer_index', {'filters_question_id' : question.id}) }}" title="{{ 'see_answers'|trans }}" id="view_button">
+                            {{ 'see_answers'|trans }}
+                        </a>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('answer_create', {'filters_question_id' : question.id}) }}" title="{{ 'create_answer'|trans }}" id="view_button">
+                                {{ 'create_answers'|trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ url('answer_add', {'filters_question_id' : question.id}) }}" title="{{ 'add_answer'|trans }}" id="view_button">
+                                {{ 'add_answers'|trans }}
+                            </a>
+                        {% endif%}
+
+
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

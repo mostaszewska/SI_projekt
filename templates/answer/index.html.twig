@@ -72,9 +72,9 @@
                             </a>
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
-                            {% if not answer.task|length %}
-                                <a href="{{ url('task_delete', {id: answer.task.id}) }}" title="view" id="view_button">
-                                    {{ 'action_delete_task'|trans }}
+                            {% if not answer.question|length %}
+                                <a href="{{ url('question_delete', {id: answer.question.id}) }}" title="view" id="view_button">
+                                    {{ 'action_delete_question'|trans }}
                                 </a>
                             {% endif %}
                         {% endif %}

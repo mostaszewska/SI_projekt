@@ -35,8 +35,11 @@ class RegistrationController extends AbstractController
      * Registration.
      *
      * @param Request $request HTTP request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Symfony\Component\Form\Exception\LogicException
+     *
      * @Route("/register", methods={"GET", "POST"}, name="user_registration")
      * )
      */
@@ -47,12 +50,11 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->userService->register($user);
 
             $this->addFlash('success', 'message_created_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('question_index');
         }
 
         return $this->render(

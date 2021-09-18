@@ -76,9 +76,9 @@ class Category
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="category")
      */
-    private $tasks;
+    private $questions;
 
     /**
      * Code.
@@ -96,7 +96,7 @@ class Category
 
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -170,29 +170,29 @@ class Category
     }
 
     /**
-     * @return Collection|Task[]
+     * @return Collection|Question[]
      */
-    public function getTasks(): Collection
+    public function getQuestions(): Collection
     {
-        return $this->tasks;
+        return $this->questions;
     }
 
-    public function addTask(Task $task): self
+    public function addQuestion(Question $question): self
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->setCategory($this);
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeTask(Task $task): self
+    public function removeQuestion(Question $question): self
     {
-        if ($this->tasks->removeElement($task)) {
+        if ($this->questions->removeElement($question)) {
             // set the owning side to null (unless already changed)
-            if ($task->getCategory() === $this) {
-                $task->setCategory(null);
+            if ($question->getCategory() === $this) {
+                $question->setCategory(null);
             }
         }
 

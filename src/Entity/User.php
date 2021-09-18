@@ -178,12 +178,12 @@ class User implements UserInterface
     /**
      * Setter for Firstname.
      * @param $firstname
+     *
      * @return $this
      */
     public function setFirstname(string $firstname): void
     {
         $this->firstname = $firstname;
-
     }
 
     /**
@@ -198,11 +198,11 @@ class User implements UserInterface
     /**
      * Setter for Lastname.
      * @param $lastname
+     *
      * @return $this
      */
     public function setLastname(string $lastname): void
     {
         $this->lastname = $lastname;
     }
-
 }

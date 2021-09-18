@@ -31,44 +31,38 @@ class AnswerService
     private $paginator;
 
     /**
-     * Task service.
+     * Question service.
      *
-     * @var \App\Service\TaskService
+     * @var \App\Service\QuestionService
      */
-    private $taskService;
-
-    /**
-     * Task service.
-     *
-     * @var \App\Repository\TaskRepository
-     */
-    private $taskRepository;
+    private $questionService;
 
     /**
      * AnswerService constructor.
      *
-     * @param AnswerRepository $answerRepository Answer repository
-     * @param PaginatorInterface $paginator          Paginator
-     * @param \App\Service\TaskService            $taskService Task service
+     * @param AnswerRepository         $answerRepository Answer repository
+     * @param PaginatorInterface       $paginator        Paginator
+     * @param \App\Service\QuestionService $questionService      Question service
      */
-    public function __construct(AnswerRepository $answerRepository, PaginatorInterface $paginator,TaskService $taskService)
+    public function __construct(AnswerRepository $answerRepository, PaginatorInterface $paginator, QuestionService $questionService)
     {
         $this->answerRepository = $answerRepository;
         $this->paginator = $paginator;
-        $this->taskService = $taskService;
+        $this->questionService = $questionService;
     }
 
     /**
      * Create paginated list.
      *
-     * @param int $taskId
+     * @param int $questionId
      * @param int $page
+     *
      * @return PaginationInterface
      */
-    public function createPaginatedList(int $taskId, int $page = 1)
+    public function createPaginatedList(int $questionId, int $page = 1)
     {
         $pagination = $this->paginator->paginate(
-            $this->answerRepository->queryByTaskId($taskId),
+            $this->answerRepository->queryByQuestionId($questionId),
             $page,
             AnswerRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -102,7 +96,7 @@ class AnswerService
         $this->answerRepository->delete($answer);
     }
     /**
-     * Prepare filters for the tasks list.
+     * Prepare filters for the questions list.
      *
      * @param array $filters Raw filters from request
      *
@@ -112,10 +106,10 @@ class AnswerService
     {
         $resultFilters = [];
 
-        if (isset($filters['task_id']) && is_numeric($filters['task_id'])) {
-            $task = $this->taskService->findOneById($filters['task_id']);
-            if (null !== $task) {
-                $resultFilters['task'] = $task;
+        if (isset($filters['question_id']) && is_numeric($filters['question_id'])) {
+            $question = $this->questionService->findOneById($filters['question_id']);
+            if (null !== $question) {
+                $resultFilters['question'] = $question;
             }
         }
 

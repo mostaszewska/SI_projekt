@@ -42,6 +42,7 @@ class CategoryController extends AbstractController
      * Index action.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -123,8 +124,8 @@ class CategoryController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Category $category Category entity
+     * @param \Symfony\Component\HttpFoundation\Request $request  HTTP request
+     * @param \App\Entity\Category                      $category Category entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -163,8 +164,8 @@ class CategoryController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Category $category Category entity
+     * @param \Symfony\Component\HttpFoundation\Request $request  HTTP request
+     * @param \App\Entity\Category                      $category Category entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -180,8 +181,8 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category): Response
     {
-        if ($category->getTasks()->count()) {
-            $this->addFlash('warning', 'message_category_contains_tasks');
+        if ($category->getQuestions()->count()) {
+            $this->addFlash('warning', 'message_category_contains_questions');
 
             return $this->redirectToRoute('category_index');
         }

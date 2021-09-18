@@ -100,20 +100,20 @@ class Tag
     private $title;
 
     /**
-     * Tasks.
+     * Questions.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Task[] Tasks
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Question[] Questions
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Task", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Question", mappedBy="tags")
      */
-    private $tasks;
+    private $questions;
 
     /**
      * Tag constructor.
      */
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -207,38 +207,38 @@ class Tag
     }
 
     /**
-     * Getter for tasks.
+     * Getter for questions.
      *
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Task[] Tasks collection
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Question[] Questions collection
      */
-    public function getTasks(): Collection
+    public function getQuestions(): Collection
     {
-        return $this->tasks;
+        return $this->questions;
     }
 
     /**
-     * Add task to collection.
+     * Add question to collection.
      *
-     * @param \App\Entity\Task $task Task entity
+     * @param \App\Entity\Question $question Question entity
      */
-    public function addTask(Task $task): void
+    public function addQuestion(Question $question): void
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->addTag($this);
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->addTag($this);
         }
     }
 
     /**
-     * Remove task from collection.
+     * Remove question from collection.
      *
-     * @param \App\Entity\Task $task Task entity
+     * @param \App\Entity\Question $question Question entity
      */
-    public function removeTask(Task $task): void
+    public function removeQuestion(Question $question): void
     {
-        if ($this->tasks->contains($task)) {
-            $this->tasks->removeElement($task);
-            $task->removeTag($this);
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            $question->removeTag($this);
         }
     }
 }

@@ -88,7 +88,8 @@ class UserController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param User $user
+     * @param User    $user
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -101,7 +102,7 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user): Response
     {
         $log = $this->getUser();
-        if ($this->isGranted('ROLE_ADMIN') ) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             $form = $this->createForm(UserdataType::class, $user, ['method' => 'PUT']);
             $form->handleRequest($request);
 
@@ -111,7 +112,7 @@ class UserController extends AbstractController
 
                 $this->addFlash('success', 'message_updated_successfully');
 
-                return $this->redirectToRoute('task_index');
+                return $this->redirectToRoute('question_index');
             }
 
             return $this->render(
@@ -121,20 +122,19 @@ class UserController extends AbstractController
                     'user' => $user,
                 ]
             );
-        }
-        else {
+        } else {
             {
                 $form = $this->createForm(UserdataType::class, $log, ['method' => 'PUT']);
                 $form->handleRequest($request);
 
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $newPassword = $form->get('newPassword')->getData();
-                    $this->userService->save($log, $newPassword);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newPassword = $form->get('newPassword')->getData();
+                $this->userService->save($log, $newPassword);
 
-                    $this->addFlash('success', 'message_updated_successfully');
+                $this->addFlash('success', 'message_updated_successfully');
 
-                    return $this->redirectToRoute('task_index');
-                }
+                return $this->redirectToRoute('question_index');
+            }
 
                 return $this->render(
                     'user/edit.html.twig',

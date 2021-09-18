@@ -5,7 +5,7 @@
 namespace App\Repository;
 
 use App\Entity\Answer;
-use App\Entity\Task;
+use App\Entity\Question;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -44,6 +44,7 @@ class AnswerRepository extends ServiceEntityRepository
      * Query all records.
      *
      * @param array $filters
+     *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
     public function queryAll(array $filters = []): QueryBuilder
@@ -53,10 +54,10 @@ class AnswerRepository extends ServiceEntityRepository
 //        $queryBuilder = $this->getOrCreateQueryBuilder()
 //            ->select(
 //                'partial answer.{id, createdAt, updatedAt, text, favourite}',
-//                'partial tasks.{id, createdAt, updatedAt, text}',
+//                'partial questions.{id, createdAt, updatedAt, text}',
 //
 //            )
-//            ->join('answer.tasks', 'tasks')
+//            ->join('answer.questions', 'questions')
 //            -> orderBy('answer.favourite',  'DESC');
 //        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
 //
@@ -90,10 +91,11 @@ class AnswerRepository extends ServiceEntityRepository
 //    }
 
     /**
-     * Query tasks by author.
+     * Query questions by author.
      *
-     * @param \App\Entity\User $user User entity
-     * @param array $filters
+     * @param \App\Entity\User $user    User entity
+     * @param array            $filters
+     *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
     public function queryByAuthor(User $user, array $filters = []): QueryBuilder
@@ -106,18 +108,19 @@ class AnswerRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
     /**
-     * Query tasks by author.
+     * Query questions by author.
      *
-     * @param \App\Entity\User $user User entity
-     * @param array $filters
+     * @param \App\Entity\User $user    User entity
+     * @param array            $filters
+     *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryByTaskId(string $task_id, array $filters = []): QueryBuilder
+    public function queryByQuestionId(string $questionId, array $filters = []): QueryBuilder
     {
         $queryBuilder = $this->queryAll($filters);
 
-        $queryBuilder->andWhere('answer.tasks = :task_id')
-            ->setParameter('task_id', $task_id);
+        $queryBuilder->andWhere('answer.question = :question_id')
+            ->setParameter('question_id', $questionId);
 
         return $queryBuilder;
     }
@@ -131,7 +134,6 @@ class AnswerRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('answer');
-
     }
     /**
      * Apply filters to paginated list.
@@ -143,9 +145,9 @@ class AnswerRepository extends ServiceEntityRepository
      */
     private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
     {
-        if (isset($filters['task']) && $filters['task'] instanceof Task) {
-            $queryBuilder->andWhere('tasks = :task')
-                ->setParameter('task', $filters['task']);
+        if (isset($filters['question']) && $filters['question'] instanceof Question) {
+            $queryBuilder->andWhere('questions = :question')
+                ->setParameter('question', $filters['question']);
         }
 
 

@@ -1,29 +1,41 @@
 <?php
 /**
- * Answer type.
+ * QuestionType.
  */
 
 namespace App\Form;
 
-use App\Entity\Answer;
+use App\Entity\Category;
 use App\Entity\Question;
+use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * Class AnswerType.
+ * Class QuestionType.
  */
-class AnswerType extends AbstractType
+class QuestionType extends AbstractType
 {
+    /**
+     * Tags data transformer.
+     *
+     * @var \App\Form\DataTransformer\TagsDataTransformer
+     */
+    private $tagsDataTransformer;
+
+    /**
+     * QuestionType constructor.
+     *
+     * @param \App\Form\DataTransformer\TagsDataTransformer $tagsDataTransformer Tags data transformer
+     */
+    public function __construct(TagsDataTransformer $tagsDataTransformer)
+    {
+        $this->tagsDataTransformer = $tagsDataTransformer;
+    }
+
     /**
      * Builds the form.
      *
@@ -37,36 +49,49 @@ class AnswerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder->add(
-            'question',
+            'title',
+            TextType::class,
+            [
+                'label' => 'label_title',
+                'required' => true,
+                'attr' => ['max_length' => 64],
+            ]
+        );
+        $builder->add(
+            'category',
             EntityType::class,
             [
-                'class' => Question::class,
-                'choice_label' => function ($question) {
-                    return $question->getTitle();
+                'class' => Category::class,
+                'choice_label' => function ($category) {
+                    return $category->getTitle();
                 },
-                'label' => 'label_question',
+                'label' => 'label_category',
                 'placeholder' => 'label_none',
                 'required' => true,
             ]
         );
-
+        $builder->add(
+            'tags',
+            TextType::class,
+            [
+                'label' => 'label_tags',
+                'required' => false,
+                'attr' => ['max_length' => 128],
+            ]
+        );
         $builder->add(
             'text',
             TextType::class,
             [
-                'label' => 'label_content',
+                'label' => 'label_text',
                 'required' => true,
-                'attr' => ['max_length' => 255],
+                'attr' => ['max_length' => 1000],
             ]
         );
-        $builder->add(
-            'favourite',
-            HiddenType::class,
-            [
-                'data' => 0,
-            ]
+
+        $builder->get('tags')->addModelTransformer(
+            $this->tagsDataTransformer
         );
     }
 
@@ -77,7 +102,7 @@ class AnswerType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Answer::class]);
+        $resolver->setDefaults(['data_class' => Question::class]);
     }
 
     /**
@@ -90,6 +115,6 @@ class AnswerType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'answer';
+        return 'question';
     }
 }

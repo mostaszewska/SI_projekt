@@ -39,7 +39,7 @@ class AnswerController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -52,9 +52,9 @@ class AnswerController extends AbstractController
     public function index(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
-        $taskId = $request->query->getInt('filters_task_id');
+        $questionId = $request->query->getInt('filters_question_id');
 
-        $pagination = $this->answerService->createPaginatedList($taskId, $page);
+        $pagination = $this->answerService->createPaginatedList($questionId, $page);
 
         return $this->render(
             'answer/index.html.twig',
@@ -111,7 +111,7 @@ class AnswerController extends AbstractController
                 $this->answerService->save($answer);
                 $this->addFlash('success', 'message_created_successfully');
 
-                return $this->redirectToRoute('task_index');
+                return $this->redirectToRoute('question_index');
             }
         }
 
@@ -124,7 +124,7 @@ class AnswerController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -148,7 +148,7 @@ class AnswerController extends AbstractController
             $this->answerService->save($answer);
             $this->addFlash('success', 'message_created_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('question_index');
         }
 
         return $this->render(
@@ -160,8 +160,8 @@ class AnswerController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
-     * @param \App\Entity\Answer                        $answer           Answer entity
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Answer                        $answer  Answer entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -189,7 +189,7 @@ class AnswerController extends AbstractController
             $this->answerService->save($answer);
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('question_index');
         }
 
         return $this->render(
@@ -204,8 +204,8 @@ class AnswerController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request          HTTP request
-     * @param \App\Entity\Answer                        $answer           Answer entity
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Answer                        $answer  Answer entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -237,7 +237,7 @@ class AnswerController extends AbstractController
             $this->answerService->delete($answer);
             $this->addFlash('success', 'message_deleted_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('question_index');
         }
 
         return $this->render(
@@ -253,7 +253,8 @@ class AnswerController extends AbstractController
      * Favourite action.
      *
      * @param Request $request HTTP request
-     * @param Answer $answer answer entity
+     * @param Answer  $answer  answer entity
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -276,7 +277,7 @@ class AnswerController extends AbstractController
             $this->answerService->save($answer);
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('question_index');
         }
 
         return $this->render(
@@ -287,5 +288,4 @@ class AnswerController extends AbstractController
             ]
         );
     }
-
 }

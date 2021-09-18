@@ -1,37 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_task_details'|trans({'%id%': task.id|default('')}) }}
+    {{ 'title_question_details'|trans({'%id%': question.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title_task_details'|trans({'%id%': task.id|default('')}) }}</h1>
-    {% if task is defined and task|length %}
+    <h1>{{ 'title_question_details'|trans({'%id%': question.id|default('')}) }}</h1>
+    {% if question is defined and question|length %}
         <dl class="dl-horizontal">
             <dt>{{ 'label_id'|trans }}</dt>
-            <dd>{{ task.id }}</dd>
+            <dd>{{ question.id }}</dd>
             <dt>{{ 'label_created_at'|trans }}</dt>
-            <dd>{{ task.createdAt|date('Y/m/d') }}</dd>
+            <dd>{{ question.createdAt|date('Y/m/d') }}</dd>
             <dt>{{ 'label_updated_at'|trans }}</dt>
-            <dd>{{ task.updatedAt|date('Y/m/d') }}</dd>
+            <dd>{{ question.updatedAt|date('Y/m/d') }}</dd>
             <dt>{{ 'label_category'|trans }}</dt>
-            <dd>{{  task.category.title }}</dd>
+            <dd>{{  question.category.title }}</dd>
             <dt>{{ 'label_author'|trans }}</dt>
-            <dd>{{  task.author.email }}</dd>
+            <dd>{{  question.author.email }}</dd>
             <dt>{{ 'label_title'|trans }}</dt>
-            <dd>{{  task.title }}</dd>
+            <dd>{{  question.title }}</dd>
             <dt>{{ 'label_text'|trans }}</dt>
-            <dd>{{ task.text|markdown_to_html }}</dd>
+            <dd>{{ question.text|markdown_to_html }}</dd>
             <dt>{{ 'label_tag'|trans }}</dt>
             <dd>
-                {% for tag in task.getTags() %}
+                {% for tag in question.getTags() %}
                     {{ tag.title }}
                 {% endfor %}
             </dd>
 
         </dl>
         <p>
-            <a href="{{ url('task_index') }}" title="{{ 'action_back_to_list'|trans }}"id="view_button">
+            <a href="{{ url('question_index') }}" title="{{ 'action_back_to_list'|trans }}"id="view_button">
                 {{ 'action_back_to_list'|trans }}
             </a>
         </p>

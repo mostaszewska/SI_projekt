@@ -43,7 +43,7 @@
                             {{ 'label_edit'|trans }}
                             {% endif %}
                         </a>
-                        {%  if not category.tasks|length %}
+                        {% if not category.questions|length %}
                             <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'label_delete'|trans }}" id="view_button">
                                 {{ 'label_delete'|trans }}
                             </a>

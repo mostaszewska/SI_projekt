@@ -6,7 +6,7 @@
 namespace App\Form;
 
 use App\Entity\Answer;
-use App\Entity\Task;
+use App\Entity\Question;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use App\Service\AnswerService;
@@ -40,14 +40,14 @@ class AnswerAnonimType extends AbstractType
 
 
         $builder->add(
-            'task',
+            'question',
             EntityType::class,
             [
-                'class' => Task::class,
-                'choice_label' => function ($task) {
-                    return $task->getTitle();
+                'class' => Question::class,
+                'choice_label' => function ($question) {
+                    return $question->getTitle();
                 },
-                'label' => 'label_task',
+                'label' => 'label_question',
                 'placeholder' => 'label_none',
                 'required' => true,
             ]

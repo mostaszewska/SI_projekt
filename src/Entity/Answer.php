@@ -69,9 +69,9 @@ class Answer
     private $favourite;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Task::class, inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="answers")
      */
-    private $tasks;
+    private $question;
 
     /**
      * Author.
@@ -135,7 +135,6 @@ class Answer
     public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
     }
 
     public function getText(): ?string
@@ -175,24 +174,25 @@ class Answer
     }
 
     /**
-     * Getter for Task.
+     * Getter for Question.
      *
-     * @return Task|null
+     * @return Question|null
      */
-    public function getTask(): ?Task
+    public function getQuestion(): ?Question
     {
-        return $this->tasks;
+        return $this->question;
     }
 
     /**
-     * Setter for Task.
+     * Setter for Question.
      *
-     * @param Task|null $task
+     * @param Question|null $question
+     *
      * @return void
      */
-    public function setTask(?Task $task): void
+    public function setQuestion(?Question $question): void
     {
-        $this->tasks = $task;
+        $this->question = $question;
     }
 
     /**
@@ -212,7 +212,5 @@ class Answer
     public function setNick(string $nick): void
     {
         $this->nick = $nick;
-
     }
-
 }

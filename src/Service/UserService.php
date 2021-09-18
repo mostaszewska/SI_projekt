@@ -10,7 +10,6 @@ use App\Repository\UserRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
-
 /**
  * ClassUserService.
  */
@@ -34,8 +33,8 @@ class UserService
     /**
      * CategoryService constructor.
      *
-     * @param \App\Repository\UserRepository      $userRepository Task repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
+     * @param \App\Repository\UserRepository          $userRepository Question repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator      Paginator
      */
     public function __construct(UserRepository $userRepository, PaginatorInterface $paginator)
     {
@@ -60,8 +59,8 @@ class UserService
     /**
      * Save category.
      *
-     * @param \App\Entity\User $user User entity
-     * @param string|null $newPassword
+     * @param \App\Entity\User $user        User entity
+     * @param string|null      $newPassword
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -75,6 +74,7 @@ class UserService
      * Register user
      *
      * @param \App\Entity\User $user
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
